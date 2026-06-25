@@ -6,7 +6,7 @@ const DB = path.join("/tmp", "keys.json");
 function load() { try { return JSON.parse(fs.readFileSync(DB,"utf8")); } catch(e) { return {keys:{}}; } }
 function save(d) { fs.writeFileSync(DB, JSON.stringify(d,null,2)); }
 function genKey() { const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let k=""; for(let i=0;i<20;i++) { if(i>0&&i%5===0) k+="-"; k+=c[crypto.randomInt(c.length)]; } return k; }
-function readBody(r) { return new Promise(ok => { let b=""; r.on("data",c=>b+=c); r.on("end",()=>{ try{ok(JSON.parse(b))}catch(e){ok({})) }); }); }
+function readBody(r) { return new Promise(ok => { let b=""; r.on("data",c=>b+=c); r.on("end",()=>{ try{ok(JSON.parse(b))}catch(e){ok({}) }); }); }
 
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin","*");
